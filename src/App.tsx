@@ -1,12 +1,12 @@
 import React from "react";
 import { AppRoutes } from "./AppRoutes";
-import "./App.css";
+import { ThemeProvider } from "./layout/services/ThemeProvider";
 
 function App() {
   return (
-    <div className='App'>
+    <ThemeProvider>
       <AppRoutes />
-    </div>
+    </ThemeProvider>
   );
 }
 

@@ -1,25 +1,27 @@
 import TextField from "@material-ui/core/TextField";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { clientApi } from "../../services/client-api";
+import { userApi } from "../../services/user-api";
 
-import { Client } from "../../interfaces";
+import { User } from "../../interfaces";
 import { ComponentForm } from "../../../interfaces";
-import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 
-export interface ClientFormProps extends ComponentForm<Client> {
-  client?: Client;
+export interface UserFormProps extends ComponentForm<User> {
+  user?: User;
 }
 
-const CLIENT_FORM_DEFAULT_VALUES: Client = {
+const USER_FORM_DEFAULT_VALUES: User = {
   id: "",
   name: "",
+  username: "",
+  password: "",
 };
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: theme.spacing(20),
+    height: theme.spacing(30),
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -28,13 +30,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function ClientForm({ client, onAfterSubmit }: ClientFormProps) {
-  const { id, name } = client || CLIENT_FORM_DEFAULT_VALUES;
+export function UserForm({ user, onAfterSubmit }: UserFormProps) {
+  const { id, name, username, password } = user || USER_FORM_DEFAULT_VALUES;
   const { control, handleSubmit } = useForm();
   const classes = useStyles();
 
-  function onSubmit(data: Client) {
-    clientApi.post(data);
+  function onSubmit(data: User) {
+    userApi.post(data);
     onAfterSubmit && onAfterSubmit(data);
   }
 
@@ -51,8 +53,25 @@ export function ClientForm({ client, onAfterSubmit }: ClientFormProps) {
           name='name'
           control={control}
           defaultValue={name}
-          rules={{ required: true }}
-          render={({ field }) => <TextField label='Nome' {...field} />}
+          render={({ field }) => (
+            <TextField fullWidth label='Nome' {...field} />
+          )}
+        />
+        <Controller
+          name='user'
+          control={control}
+          defaultValue={username}
+          render={({ field }) => (
+            <TextField fullWidth label='Email' {...field} />
+          )}
+        />
+        <Controller
+          name='user'
+          control={control}
+          defaultValue={password}
+          render={({ field }) => (
+            <TextField fullWidth type='password' label='Senha' {...field} />
+          )}
         />
         <Button variant='contained' type='submit' color='secondary'>
           Criar Empresa

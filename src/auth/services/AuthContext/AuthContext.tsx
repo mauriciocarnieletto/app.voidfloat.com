@@ -3,12 +3,11 @@ import { User } from "../../../user/interfaces";
 
 export interface AuthContextProps {
   isAuth: boolean;
-  user: User;
+  user?: User;
   token: string | null;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
   isAuth: true,
-  user: {},
   token: localStorage.getItem("auth-token"),
 });

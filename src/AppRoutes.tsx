@@ -86,9 +86,9 @@ export function AppRoutes() {
       <Switch>
         {[...setupRoutes, ...homeRoutes, ...authRoutes].map((props) => {
           return props.isPrivate ? (
-            <PrivateRoute {...props} />
+            <PrivateRoute key={props.path} {...props} />
           ) : (
-            <PublicRoute {...props} />
+            <PublicRoute key={props.path} {...props} />
           );
         })}
       </Switch>

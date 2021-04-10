@@ -6,17 +6,27 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
+import { UserForm } from "../../user/components/UserForm";
+import { Client } from "../../client/interfaces";
 import { ClientForm } from "../../client/components/ClientForm";
+import { slugify } from "../../helpers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
+    marginTop: theme.spacing(6),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
   button: {
+    marginTop: theme.spacing(6),
     marginRight: theme.spacing(1),
   },
-  instructions: {
-    marginTop: theme.spacing(1),
+  stepContainer: {
+    width: "100%",
+    marginTop: theme.spacing(6),
     marginBottom: theme.spacing(1),
   },
 }));
@@ -27,8 +37,10 @@ function getSteps() {
 
 export default function InitialSetupPage() {
   const classes = useStyles();
+  const [canGoNext, setCanGoNext] = React.useState(true);
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
+  const [clientData, setClientData] = React.useState<Client>();
   const steps = getSteps();
 
   const isStepOptional = (step: number) => {
@@ -73,12 +85,43 @@ export default function InitialSetupPage() {
     setActiveStep(0);
   };
 
+  function onAfterSubmit() {
+    setCanGoNext(true);
+    handleNext();
+  }
+
+  function onBeforShowForm() {
+    if (canGoNext) setCanGoNext(false);
+  }
+
   function getStepContent(step: number) {
     switch (step) {
       case 0:
-        return <ClientForm onAfterSubmit={handleNext} />;
+        onBeforShowForm();
+        return (
+          <ClientForm
+            client={clientData}
+            onAfterSubmit={(client) => {
+              setClientData(client);
+              onAfterSubmit();
+            }}
+          />
+        );
       case 1:
-        return "Administrador";
+        onBeforShowForm();
+        return (
+          <UserForm
+            user={{
+              id: "",
+              name: clientData?.name || "",
+              username: clientData
+                ? `${slugify(clientData.name)}@voidfloat.com.br`
+                : "",
+              password: "",
+            }}
+            onAfterSubmit={onAfterSubmit}
+          />
+        );
       case 2:
         return "Encontrar Pod's";
       default:
@@ -92,62 +135,31 @@ export default function InitialSetupPage() {
         {steps.map((label, index) => {
           const stepProps: any = {};
           const labelProps: any = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography variant='caption'>Optional</Typography>
-            );
-          }
           if (isStepSkipped(index)) {
             stepProps.completed = false;
           }
           return (
-            <Step key={label} {...stepProps}>
+            <Step
+              key={label}
+              onClick={() => setActiveStep(index)}
+              {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
           );
         })}
       </Stepper>
-      <div>
+      <div className={classes.stepContainer}>
         {activeStep === steps.length ? (
-          <div>
-            <Typography className={classes.instructions}>
+          <>
+            <Typography className={classes.stepContainer}>
               All steps completed - you&apos;re finished
             </Typography>
             <Button onClick={handleReset} className={classes.button}>
               Reset
             </Button>
-          </div>
+          </>
         ) : (
-          <div>
-            <Typography className={classes.instructions}>
-              {getStepContent(activeStep)}
-            </Typography>
-            <div>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.button}>
-                Back
-              </Button>
-              {isStepOptional(activeStep) && (
-                <Button
-                  variant='contained'
-                  color='primary'
-                  onClick={handleSkip}
-                  className={classes.button}>
-                  Skip
-                </Button>
-              )}
-
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={handleNext}
-                className={classes.button}>
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
-            </div>
-          </div>
+          getStepContent(activeStep)
         )}
       </div>
     </div>
