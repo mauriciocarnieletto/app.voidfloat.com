@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { UserForm } from "../../user/components/UserForm";
+import { SignUpForm } from "../../auth/components/SignUpForm";
 import { Client } from "../../client/interfaces";
 import { ClientForm } from "../../client/components/ClientForm";
 import { slugify } from "../../helpers";
+import { clientApi } from "../../client/services/client-api";
+import { User } from "../../user/interfaces";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(6),
     marginRight: theme.spacing(1),
   },
+  stepButton: {
+    cursor: "pointer",
+  },
   stepContainer: {
     width: "100%",
     marginTop: theme.spacing(6),
@@ -32,20 +38,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ["Cliente", "Administrador", "Encontrar Pod's"];
+  return ["Cadastrar Cliente", "Criar Usuário", "Configurar Servidor"];
 }
 
 export default function InitialSetupPage() {
   const classes = useStyles();
+  const [isLoading, setIsLoading] = React.useState(false);
   const [canGoNext, setCanGoNext] = React.useState(true);
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [clientData, setClientData] = React.useState<Client>();
-  const steps = getSteps();
+  const [userData, setUserData] = React.useState<User>();
 
-  const isStepOptional = (step: number) => {
-    return step === 1;
-  };
+  const steps = getSteps();
 
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
@@ -60,25 +65,6 @@ export default function InitialSetupPage() {
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
   };
 
   const handleReset = () => {
@@ -110,17 +96,23 @@ export default function InitialSetupPage() {
       case 1:
         onBeforShowForm();
         return (
-          <UserForm
-            user={{
-              id: "",
-              name: clientData?.name || "",
-              username: clientData
-                ? `${slugify(clientData.name)}@voidfloat.com.br`
-                : "",
-              password: "",
-            }}
-            onAfterSubmit={onAfterSubmit}
-          />
+          clientData?.id && (
+            <SignUpForm
+              user={
+                userData || {
+                  clientId: clientData.id,
+                  name: clientData?.name || "",
+                  email: clientData
+                    ? `${slugify(clientData.name)}@voidfloat.com.br`
+                    : "",
+                }
+              }
+              onAfterSubmit={(user) => {
+                setUserData(user);
+                onAfterSubmit();
+              }}
+            />
+          )
         );
       case 2:
         return "Encontrar Pod's";
@@ -129,7 +121,15 @@ export default function InitialSetupPage() {
     }
   }
 
-  return (
+  useEffect(() => {
+    setIsLoading(true);
+    clientApi.get().then((response) => {
+      if (response.data?.length === 1) setClientData(response.data[0]);
+      setIsLoading(false);
+    });
+  }, []);
+
+  return !isLoading ? (
     <div className={classes.root}>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
@@ -141,7 +141,8 @@ export default function InitialSetupPage() {
           return (
             <Step
               key={label}
-              onClick={() => setActiveStep(index)}
+              className={classes.stepButton}
+              onClick={() => activeStep >= index && setActiveStep(index)}
               {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
@@ -163,5 +164,7 @@ export default function InitialSetupPage() {
         )}
       </div>
     </div>
+  ) : (
+    <CircularProgress color='secondary' />
   );
 }

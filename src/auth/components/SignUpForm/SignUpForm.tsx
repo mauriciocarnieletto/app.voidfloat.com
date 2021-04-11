@@ -3,15 +3,15 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Controller, useForm } from "react-hook-form";
-import { userApi } from "../../services/user-api";
+import { authApi } from "../../services/auth-api";
 import {
   useMessageHandler,
   MessageHandlerActions,
 } from "../../../services/handlers/MessageHandler";
-import { User } from "../../interfaces";
+import { User } from "../../../user/interfaces";
 import { ComponentForm } from "../../../interfaces";
 
-export interface UserFormProps extends ComponentForm<User> {
+export interface SignUpFormProps extends ComponentForm<User> {
   user?: User;
 }
 
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function UserForm({ user, onAfterSubmit }: UserFormProps) {
+export function SignUpForm({ user, onAfterSubmit }: SignUpFormProps) {
   const { id, name, email, password, clientId } =
     user || USER_FORM_DEFAULT_VALUES;
   const { control, handleSubmit } = useForm();
@@ -42,7 +42,7 @@ export function UserForm({ user, onAfterSubmit }: UserFormProps) {
 
   async function onSubmit(data: User) {
     try {
-      await userApi.upsert(data);
+      await authApi.signUp(data);
       onAfterSubmit && onAfterSubmit(data);
     } catch (error) {
       dispatch({

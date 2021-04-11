@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import { User } from "../../../user/interfaces";
+import { AuthTokenLocalStorageKey } from "../../constants";
 
 export interface AuthContextProps {
   isAuth: boolean;
@@ -9,5 +10,5 @@ export interface AuthContextProps {
 
 export const AuthContext = createContext<AuthContextProps>({
   isAuth: true,
-  token: localStorage.getItem("auth-token"),
+  token: localStorage.getItem(AuthTokenLocalStorageKey),
 });

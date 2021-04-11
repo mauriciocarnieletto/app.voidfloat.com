@@ -3,19 +3,20 @@ import TextField from "@material-ui/core/TextField";
 import { Controller, useForm } from "react-hook-form";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import { clientApi } from "../../services/client-api";
+import { podApi } from "../../services/pod-api";
 import {
   MessageHandlerActions,
   useMessageHandler,
 } from "../../../services/handlers/MessageHandler";
-import { Client } from "../../interfaces";
+import { Pod } from "../../interfaces";
 import { ComponentForm } from "../../../interfaces";
 
-export interface ClientFormProps extends ComponentForm<Client> {
-  client?: Client;
+export interface AddPodFormProps extends ComponentForm<Pod> {
+  pod?: Pod;
 }
 
-const CLIENT_FORM_DEFAULT_VALUES: Client = {
+const CLIENT_FORM_DEFAULT_VALUES: Pod = {
+  id: "",
   name: "",
 };
 
@@ -30,15 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function ClientForm({ client, onAfterSubmit }: ClientFormProps) {
+export function ClientForm({ pod: client, onAfterSubmit }: AddPodFormProps) {
   const { id, name } = client || CLIENT_FORM_DEFAULT_VALUES;
   const { control, handleSubmit } = useForm();
   const classes = useStyles();
   const { dispatch } = useMessageHandler();
 
-  async function onSubmit(data: Client) {
+  async function onSubmit(data: Pod) {
     try {
-      await clientApi.upsert(data);
+      await podApi.upsert(data);
       onAfterSubmit && onAfterSubmit(data);
     } catch (error) {
       dispatch({

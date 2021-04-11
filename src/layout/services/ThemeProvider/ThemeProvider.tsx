@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { darkTheme, lightTheme } from "../../themes";
 
