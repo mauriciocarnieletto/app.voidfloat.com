@@ -11,8 +11,9 @@ import styles from "./adminStyle";
 import { appRoutes } from "../../../app-routes";
 
 import bgImage from "../../../assets/images/sidebar-2.jpg";
-import logo from "../../../assets/images/reactlogo.png";
+import logo from "../../../assets/images/logo.svg";
 
+import "./layout.css";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 
 let ps;
@@ -72,8 +73,7 @@ export function PrivateLayout({ children, ...rest }) {
   return (
     <div className={classes.wrapper}>
       <Sidebar
-        routes={appRoutes}
-        logoText={"Creative Tim"}
+        routes={appRoutes.filter((r) => r.showOnMenu)}
         logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
@@ -91,14 +91,6 @@ export function PrivateLayout({ children, ...rest }) {
           <div className={classes.container}>{children}</div>
         </div>
         <Footer />
-        <FixedPlugin
-          handleImageClick={handleImageClick}
-          handleColorClick={handleColorClick}
-          bgColor={color}
-          bgImage={image}
-          handleFixedClick={handleFixedClick}
-          fixedClasses={fixedClasses}
-        />
       </div>
     </div>
   );

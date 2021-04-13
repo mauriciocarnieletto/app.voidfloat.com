@@ -1,6 +1,6 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
-export const lightTheme = createMuiTheme({
+const theme = {
   palette: {
     primary: {
       main: "#152133",
@@ -9,7 +9,12 @@ export const lightTheme = createMuiTheme({
       main: "#BFA266",
     },
   },
-});
+  typography: {
+    fontFamily: ["Poppins", "Roboto"].join(","),
+  },
+};
+
+export const lightTheme = createMuiTheme({ ...theme });
 
 export const darkTheme = createMuiTheme({
   palette: {
@@ -20,5 +25,8 @@ export const darkTheme = createMuiTheme({
     secondary: {
       main: "#BFA266",
     },
+  },
+  typography: {
+    fontFamily: ["Poppins", "Roboto"].join(","),
   },
 });

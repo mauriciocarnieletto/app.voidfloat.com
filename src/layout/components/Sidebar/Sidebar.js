@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
@@ -24,7 +25,7 @@ export default function Sidebar(props) {
   function activeRoute(routeName) {
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   }
-  const { color, logo, image, logoText, routes } = props;
+  const { color, logo, image, routes } = props;
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {
@@ -75,15 +76,11 @@ export default function Sidebar(props) {
   );
   var brand = (
     <div className={classes.logo}>
-      <a
-        href='https://www.creative-tim.com?ref=mdr-sidebar'
-        className={classNames(classes.logoLink, {})}
-        target='_blank'>
+      <Link to='/'>
         <div className={classes.logoImage}>
           <img src={logo} alt='logo' className={classes.img} />
         </div>
-        {logoText}
-      </a>
+      </Link>
     </div>
   );
   return (
@@ -140,7 +137,6 @@ Sidebar.propTypes = {
   bgColor: PropTypes.oneOf(["purple", "blue", "green", "orange", "red"]),
   logo: PropTypes.string,
   image: PropTypes.string,
-  logoText: PropTypes.string,
   routes: PropTypes.arrayOf(PropTypes.object),
   open: PropTypes.bool,
 };

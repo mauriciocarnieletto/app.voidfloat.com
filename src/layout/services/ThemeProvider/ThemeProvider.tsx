@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import { darkTheme, lightTheme } from "../../themes";
+import { darkTheme, lightTheme } from "../../resources/themes";
 
 export type Themes = "light" | "dark";
 
@@ -9,9 +9,13 @@ export interface ThemeContextProps {
   setTheme?: React.Dispatch<React.SetStateAction<Themes>>;
 }
 
-export const ThemeContext = createContext<ThemeContextProps>({
-  theme: "dark",
-});
+const themeContextDefault: ThemeContextProps = {
+  theme: "light",
+};
+
+export const ThemeContext = createContext<ThemeContextProps>(
+  themeContextDefault
+);
 
 export function useTheme() {
   const themeContext = useContext(ThemeContext);
@@ -30,7 +34,9 @@ function MaterialThemeProvider({ children }: React.PropsWithChildren<unknown>) {
 }
 
 export function ThemeProvider({ children }: React.PropsWithChildren<unknown>) {
-  const [theme, setTheme] = useState<ThemeContextProps["theme"]>("dark");
+  const [theme, setTheme] = useState<ThemeContextProps["theme"]>(
+    themeContextDefault.theme
+  );
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
