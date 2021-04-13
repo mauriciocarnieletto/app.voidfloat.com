@@ -1,44 +1,25 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
 import PerfectScrollbar from "perfect-scrollbar";
 import { makeStyles } from "@material-ui/core/styles";
-import Navbar from "./Navbars/Navbar";
-import Footer from "./Footer/Footer";
-import Sidebar from "./Sidebar/Sidebar";
-import FixedPlugin from "./FixedPlugin/FixedPlugin";
-
-import routes from "routes.js";
+import Navbar from "../Navbars/Navbar";
+import Footer from "../Footer/Footer";
+import Sidebar from "../Sidebar/Sidebar";
+import FixedPlugin from "../FixedPlugin/FixedPlugin";
 
 import styles from "./adminStyle";
 
-import bgImage from "../../assets/images/sidebar-2.jpg";
-import logo from "../../assets/images/reactlogo.png";
+import { appRoutes } from "../../../app-routes";
+
+import bgImage from "../../../assets/images/sidebar-2.jpg";
+import logo from "../../../assets/images/reactlogo.png";
 
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 
 let ps;
 
-const switchRoutes = (
-  <Switch>
-    {routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      }
-      return null;
-    })}
-    <Redirect from='/admin' to='/admin/dashboard' />
-  </Switch>
-);
-
 const useStyles = makeStyles(styles);
 
-export default function PrivateLayout({ ...rest }) {
+export function PrivateLayout({ children, ...rest }) {
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
@@ -64,9 +45,7 @@ export default function PrivateLayout({ ...rest }) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  const getRoute = () => {
-    return window.location.pathname !== "/admin/maps";
-  };
+
   const resizeFunction = () => {
     if (window.innerWidth >= 960) {
       setMobileOpen(false);
@@ -93,7 +72,7 @@ export default function PrivateLayout({ ...rest }) {
   return (
     <div className={classes.wrapper}>
       <Sidebar
-        routes={routes}
+        routes={appRoutes}
         logoText={"Creative Tim"}
         logo={logo}
         image={image}
@@ -104,19 +83,14 @@ export default function PrivateLayout({ ...rest }) {
       />
       <div className={classes.mainPanel} ref={mainPanel}>
         <Navbar
-          routes={routes}
+          routes={appRoutes}
           handleDrawerToggle={handleDrawerToggle}
           {...rest}
         />
-        {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
-        {getRoute() ? (
-          <div className={classes.content}>
-            <div className={classes.container}>{switchRoutes}</div>
-          </div>
-        ) : (
-          <div className={classes.map}>{switchRoutes}</div>
-        )}
-        {getRoute() ? <Footer /> : null}
+        <div className={classes.content}>
+          <div className={classes.container}>{children}</div>
+        </div>
+        <Footer />
         <FixedPlugin
           handleImageClick={handleImageClick}
           handleColorClick={handleColorClick}
