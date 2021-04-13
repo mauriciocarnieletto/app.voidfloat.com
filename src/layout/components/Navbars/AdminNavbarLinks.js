@@ -25,6 +25,7 @@ export default function AdminNavbarLinks() {
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
+  const [notifications, setNotifications] = React.useState([]);
   const handleClickNotification = (event) => {
     if (openNotification && openNotification.contains(event.target)) {
       setOpenNotification(null);
@@ -53,9 +54,9 @@ export default function AdminNavbarLinks() {
             className: classes.margin + " " + classes.search,
           }}
           inputProps={{
-            placeholder: "Search",
+            placeholder: "Pesquisar",
             inputProps: {
-              "aria-label": "Search",
+              "aria-label": "Pesquisar",
             },
           }}
         />
@@ -84,10 +85,16 @@ export default function AdminNavbarLinks() {
           onClick={handleClickNotification}
           className={classes.buttonLink}>
           <Notifications className={classes.icons} />
-          <span className={classes.notifications}>5</span>
+          <span
+            className={
+              notifications.filter((notification) => notification.unread)
+                .length > 0 && classes.notifications
+            }>
+            {notifications.filter((notification) => notification.unread)}
+          </span>
           <Hidden mdUp implementation='css'>
             <p onClick={handleCloseNotification} className={classes.linkText}>
-              Notification
+              Notificações
             </p>
           </Hidden>
         </Button>
@@ -112,31 +119,13 @@ export default function AdminNavbarLinks() {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseNotification}>
                   <MenuList role='menu'>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}>
-                      Mike John responded to your email
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}>
-                      You have 5 new tasks
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}>
-                      You{"'"}re now friend with Andrew
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}>
-                      Another Notification
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}>
-                      Another One
-                    </MenuItem>
+                    {notifications.map((notification) => (
+                      <MenuItem
+                        onClick={handleCloseNotification}
+                        className={classes.dropdownItem}>
+                        {notification.title}
+                      </MenuItem>
+                    ))}
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
@@ -155,7 +144,7 @@ export default function AdminNavbarLinks() {
           className={classes.buttonLink}>
           <Person className={classes.icons} />
           <Hidden mdUp implementation='css'>
-            <p className={classes.linkText}>Profile</p>
+            <p className={classes.linkText}>Perfil</p>
           </Hidden>
         </Button>
         <Poppers
@@ -182,18 +171,18 @@ export default function AdminNavbarLinks() {
                     <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}>
-                      Profile
+                      Perfil
                     </MenuItem>
                     <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}>
-                      Settings
+                      Configurações
                     </MenuItem>
                     <Divider light />
                     <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}>
-                      Logout
+                      Sair
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>

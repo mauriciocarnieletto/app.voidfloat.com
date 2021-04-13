@@ -3,10 +3,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Button from "../CustomButtons/Button.js";
-import imagine1 from "../../../assets/images/sidebar-1.jpg";
-import imagine2 from "../../../assets/images/sidebar-2.jpg";
-import imagine3 from "../../../assets/images/sidebar-3.jpg";
-import imagine4 from "../../../assets/images/sidebar-4.jpg";
+import imagine1 from "../../../assets/images/sidebar-1.png";
+import imagine2 from "../../../assets/images/sidebar-2.png";
+import imagine3 from "../../../assets/images/sidebar-3.png";
+import imagine4 from "../../../assets/images/sidebar-4.png";
 
 export default function FixedPlugin(props) {
   const [classes, setClasses] = React.useState("dropdown show");

@@ -1,3 +1,4 @@
+import { makeStyles } from "@material-ui/core/styles";
 import {
   successColor,
   whiteColor,
@@ -79,4 +80,4 @@ const dashboardStyle = {
   },
 };
 
-export default dashboardStyle;
+export default makeStyles(dashboardStyle);
