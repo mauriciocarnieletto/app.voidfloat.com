@@ -83,11 +83,6 @@ export function LoginForm() {
                 Esqueceu sua senha?
               </Link>
             </Grid>
-            <Grid item>
-              <Link to='/signup' color='secondary' variant='body2'>
-                {"Criar uma conta"}
-              </Link>
-            </Grid>
           </Grid>
         </form>
       </div>

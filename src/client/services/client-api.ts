@@ -16,6 +16,6 @@ export const clientApi = {
     return this.post(client);
   },
   async get() {
-    return api.get<Client[]>("/client");
+    return api.get<Client>("/client");
   },
 };

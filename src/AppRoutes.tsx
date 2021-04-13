@@ -8,13 +8,13 @@ import {
 } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
+import { AuthProvider } from "./auth/services/AuthContext";
+
 import { PrivateLayout } from "./layout/components/PrivateLayout";
 import { PublicLayout } from "./layout/components/PublicLayout";
 import { useAuth } from "./auth/services/useAuth";
 
-import { authRoutes } from "./auth/auth-routes";
-import { homeRoutes } from "./home/home-routes";
-import { setupRoutes } from "./setup/setup-routes";
+import { appRoutes } from "./app-routes";
 
 export type AppRoute = RouteProps & {
   title: string;
@@ -48,7 +48,7 @@ export function PrivateRoute({
             <Component {...props} />
           </PrivateLayout>
         ) : (
-          <Redirect to={`/login?from${props.location}`} />
+          <Redirect to={`/login?from=${props.location.pathname}`} />
         )
       }
     />
@@ -82,16 +82,18 @@ export function PublicRoute({
 
 export function AppRoutes() {
   return (
-    <Router>
-      <Switch>
-        {[...setupRoutes, ...homeRoutes, ...authRoutes].map((props) => {
-          return props.isPrivate ? (
-            <PrivateRoute key={props.path} {...props} />
-          ) : (
-            <PublicRoute key={props.path} {...props} />
-          );
-        })}
-      </Switch>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Switch>
+          {appRoutes.map((props) => {
+            return props.isPrivate ? (
+              <PrivateRoute key={props.path} {...props} />
+            ) : (
+              <PublicRoute key={props.path} {...props} />
+            );
+          })}
+        </Switch>
+      </Router>
+    </AuthProvider>
   );
 }

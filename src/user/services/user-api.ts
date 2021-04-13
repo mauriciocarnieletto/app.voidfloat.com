@@ -2,6 +2,9 @@ import { api } from "../../services/api";
 import { User } from "../interfaces";
 
 export const userApi = {
+  me() {
+    return api.get<User>("/users/me");
+  },
   get() {
     return api.get<User[]>("/users");
   },

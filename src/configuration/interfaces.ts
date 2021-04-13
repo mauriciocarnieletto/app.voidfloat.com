@@ -1,8 +1,13 @@
-export interface Configuration {
-  gatewayIp: string;
-  hostname: string;
-  hostIp: string;
-  networkIp: string;
-  port: string;
-  endpoint: string;
+export interface NetworkConfiguration {
+  id?: number;
+  name?: string;
+  clientId: number;
+  sshPort?: string;
+  hostname?: string;
+  gatewayIp?: string;
+  localIp?: string;
+  publicIp?: string;
+  subnet?: string;
+  podPingEndpoint?: string;
+  podPort?: number;
 }

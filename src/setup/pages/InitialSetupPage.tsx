@@ -7,12 +7,23 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { SignUpForm } from "../../auth/components/SignUpForm";
-import { Client } from "../../client/interfaces";
 import { ClientForm } from "../../client/components/ClientForm";
-import { slugify } from "../../helpers";
+import { Client } from "../../client/interfaces";
 import { clientApi } from "../../client/services/client-api";
+
+import { SignUpForm } from "../../auth/components/SignUpForm";
 import { User } from "../../user/interfaces";
+
+import { NetworkConfigurationForm } from "../../configuration/components/NetworkConfigurationForm";
+import { NetworkConfiguration } from "../../configuration/interfaces";
+import { networkConfigurationApi } from "../../configuration/services/server-configuration-api";
+
+import { slugify } from "../../helpers";
+import {
+  MessageHandlerActions,
+  useMessageHandler,
+} from "../../services/handlers/MessageHandler";
+import { useAuth } from "../../auth/services/useAuth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,94 +49,126 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ["Cadastrar Cliente", "Criar Usuário", "Configurar Servidor"];
+  return [
+    "Cadastrar Cliente",
+    "Criar Usuário",
+    "Configurar Servidor",
+    "Encontrar Pod's",
+  ];
+}
+
+interface StepState {
+  isLoading: boolean;
+  activeStep: number;
+  clientData?: Client;
+  userData?: User;
+  networkConfigurationData?: NetworkConfiguration;
 }
 
 export default function InitialSetupPage() {
   const classes = useStyles();
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [canGoNext, setCanGoNext] = React.useState(true);
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
-  const [clientData, setClientData] = React.useState<Client>();
-  const [userData, setUserData] = React.useState<User>();
+  const { dispatch } = useMessageHandler();
+  const [state, setState] = React.useState<StepState>({
+    isLoading: false,
+    activeStep: 0,
+    clientData: undefined,
+    userData: undefined,
+    networkConfigurationData: undefined,
+  });
+
+  const {
+    isLoading,
+    activeStep,
+    clientData,
+    userData,
+    networkConfigurationData,
+  } = state;
+
+  const { user } = useAuth();
 
   const steps = getSteps();
 
-  const isStepSkipped = (step: number) => {
-    return skipped.has(step);
-  };
-
-  const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
-  };
+  function pushState(stateProp: any) {
+    setState((prevState) => ({ ...prevState, ...stateProp }));
+  }
 
   const handleReset = () => {
-    setActiveStep(0);
+    pushState({ activeStep: 0 });
   };
 
-  function onAfterSubmit() {
-    setCanGoNext(true);
-    handleNext();
-  }
-
-  function onBeforShowForm() {
-    if (canGoNext) setCanGoNext(false);
-  }
-
-  function getStepContent(step: number) {
+  const getStepContent = (step: number) => {
     switch (step) {
       case 0:
-        onBeforShowForm();
         return (
           <ClientForm
             client={clientData}
             onAfterSubmit={(client) => {
-              setClientData(client);
-              onAfterSubmit();
+              pushState({ clientData: client, activeStep: activeStep + 1 });
             }}
           />
         );
       case 1:
-        onBeforShowForm();
         return (
-          clientData?.id && (
-            <SignUpForm
-              user={
-                userData || {
-                  clientId: clientData.id,
-                  name: clientData?.name || "",
-                  email: clientData
-                    ? `${slugify(clientData.name)}@voidfloat.com.br`
-                    : "",
-                }
-              }
-              onAfterSubmit={(user) => {
-                setUserData(user);
-                onAfterSubmit();
-              }}
-            />
-          )
+          <SignUpForm
+            user={
+              userData ||
+              user ||
+              (clientData?.id
+                ? {
+                    clientId: clientData.id,
+                    name: clientData.name || "",
+                    email: clientData
+                      ? `${slugify(clientData.name)}@voidfloat.com.br`
+                      : "",
+                  }
+                : undefined)
+            }
+            onAfterSubmit={(user) => {
+              pushState({ userData: user, activeStep: activeStep + 1 });
+            }}
+          />
         );
       case 2:
+        if (!networkConfigurationData) {
+          pushState({ isLoading: true });
+          networkConfigurationApi
+            .get()
+            .then((response) => {
+              pushState({
+                networkConfigurationData: response.data,
+                isLoading: false,
+              });
+            })
+            .catch((error) => {
+              dispatch({
+                type: MessageHandlerActions.ERROR,
+                payload: {
+                  type: MessageHandlerActions.ERROR,
+                  message: "Ocorreu um erro ao atualizar a interface de rede",
+                  description: error.message,
+                },
+              });
+            });
+        }
+        return networkConfigurationData ? (
+          <NetworkConfigurationForm
+            networkConfiguration={networkConfigurationData}
+          />
+        ) : null;
+      case 3:
         return "Encontrar Pod's";
       default:
         return "Unknown step";
     }
-  }
+  };
 
   useEffect(() => {
-    setIsLoading(true);
+    pushState({ isLoading: true });
     clientApi.get().then((response) => {
-      if (response.data?.length === 1) setClientData(response.data[0]);
-      setIsLoading(false);
+      if (response.data) {
+        return pushState({ isLoading: false, clientData: response.data });
+      }
+      pushState({ isLoading: false });
     });
   }, []);
 
@@ -135,14 +178,13 @@ export default function InitialSetupPage() {
         {steps.map((label, index) => {
           const stepProps: any = {};
           const labelProps: any = {};
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
           return (
             <Step
               key={label}
               className={classes.stepButton}
-              onClick={() => activeStep >= index && setActiveStep(index)}
+              onClick={() =>
+                activeStep >= index && pushState({ activeStep: index })
+              }
               {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>

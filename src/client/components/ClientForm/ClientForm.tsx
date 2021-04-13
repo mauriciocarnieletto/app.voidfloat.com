@@ -38,8 +38,9 @@ export function ClientForm({ client, onAfterSubmit }: ClientFormProps) {
 
   async function onSubmit(data: Client) {
     try {
-      await clientApi.upsert(data);
-      onAfterSubmit && onAfterSubmit(data);
+      await clientApi
+        .upsert(data)
+        .then((response) => onAfterSubmit && onAfterSubmit(response.data));
     } catch (error) {
       dispatch({
         type: MessageHandlerActions.ERROR,
@@ -69,7 +70,7 @@ export function ClientForm({ client, onAfterSubmit }: ClientFormProps) {
           render={({ field }) => <TextField label='Nome' {...field} />}
         />
         <Button variant='contained' type='submit' color='primary'>
-          {id ? "Enviar" : "Atualizar"}
+          {!id ? "Enviar" : "Atualizar"}
         </Button>
       </div>
     </form>

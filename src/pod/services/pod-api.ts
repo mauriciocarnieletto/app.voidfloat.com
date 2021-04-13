@@ -1,4 +1,5 @@
 import { api } from "../../services/api";
+import { mockData } from "../services/mock-data";
 import { Pod } from "../interfaces";
 
 export const podApi = {
@@ -10,7 +11,7 @@ export const podApi = {
   },
   async upsert(data: Pod) {
     if (data.id) {
-      await this.patch(data);
+      await this.put(data.id, data);
       return this.getById(data.id);
     } else {
       return this.post(data);
@@ -20,7 +21,9 @@ export const podApi = {
     return api.get(`/pod/${id}`);
   },
   get() {
-    return api.get("/pod");
+    return new Promise((resolve) => {
+      resolve(mockData.pods);
+    }); //api.get("/pod");
   },
   searchByIpAddres(ipAddress: string) {
     return api.get(`/pod/ip/${ipAddress}`);

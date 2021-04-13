@@ -15,11 +15,6 @@ export interface AddPodFormProps extends ComponentForm<Pod> {
   pod?: Pod;
 }
 
-const CLIENT_FORM_DEFAULT_VALUES: Pod = {
-  id: "",
-  name: "",
-};
-
 const useStyles = makeStyles((theme) => ({
   root: {
     height: theme.spacing(20),
@@ -31,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function ClientForm({ pod: client, onAfterSubmit }: AddPodFormProps) {
-  const { id, name } = client || CLIENT_FORM_DEFAULT_VALUES;
+export function ClientForm({ pod, onAfterSubmit }: AddPodFormProps) {
+  const { id, name } = pod || { id: "", name: "" };
   const { control, handleSubmit } = useForm();
   const classes = useStyles();
   const { dispatch } = useMessageHandler();

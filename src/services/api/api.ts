@@ -7,7 +7,9 @@ const axiosImplementation = axios.create({
 });
 
 axiosImplementation.interceptors.request.use(function (config) {
-  config.headers.Authorization = localStorage.getItem(AuthTokenLocalStorageKey);
+  config.headers.Authorization = `Bearer ${localStorage.getItem(
+    AuthTokenLocalStorageKey
+  )}`;
   return config;
 });
 
