@@ -11,7 +11,8 @@ import Poppers from "@material-ui/core/Popper";
 import Divider from "@material-ui/core/Divider";
 import Person from "@material-ui/icons/Person";
 import Notifications from "@material-ui/icons/Notifications";
-import Dashboard from "@material-ui/icons/Dashboard";
+import VolumeOff from "@material-ui/icons/VolumeOff";
+import VolumeUp from "@material-ui/icons/VolumeUp";
 import Search from "@material-ui/icons/Search";
 
 import CustomInput from "../CustomInput/CustomInput.js";
@@ -26,6 +27,8 @@ export default function AdminNavbarLinks() {
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
   const [notifications, setNotifications] = React.useState([]);
+  const [isMuted, setIsMuted] = React.useState(false);
+
   const handleClickNotification = (event) => {
     if (openNotification && openNotification.contains(event.target)) {
       setOpenNotification(null);
@@ -68,11 +71,16 @@ export default function AdminNavbarLinks() {
         color={window.innerWidth > 959 ? "transparent" : "white"}
         justIcon={window.innerWidth > 959}
         simple={!(window.innerWidth > 959)}
-        aria-label='Dashboard'
+        onClick={() => setIsMuted((prev) => !prev)}
+        aria-label='Mute'
         className={classes.buttonLink}>
-        <Dashboard className={classes.icons} />
+        {isMuted ? (
+          <VolumeOff className={classes.icons} />
+        ) : (
+          <VolumeUp className={classes.icons} />
+        )}
         <Hidden mdUp implementation='css'>
-          <p className={classes.linkText}>Dashboard</p>
+          <p className={classes.linkText}>Mute</p>
         </Hidden>
       </Button>
       <div className={classes.manager}>
