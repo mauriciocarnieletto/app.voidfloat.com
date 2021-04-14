@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -188,7 +189,7 @@ export default function AdminNavbarLinks() {
                     <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}>
-                      Configurações
+                      <Link to='/configuration'>Configurações</Link>
                     </MenuItem>
                     <Divider light />
                     <MenuItem

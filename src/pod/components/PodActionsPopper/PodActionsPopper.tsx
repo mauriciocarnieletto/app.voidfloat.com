@@ -25,7 +25,7 @@ export function PodActionsMenu({
 }: PodActionsMenuProps) {
   const classes = useStyles();
   const commandsMenu: {
-    icon: JSX.Element;
+    icon: React.FC;
     name: string;
     onClick: (pod: Pod) => void;
   }[] = [];
@@ -53,7 +53,7 @@ export function PodActionsMenu({
           <Paper>
             <ClickAwayListener onClickAway={handleCloseMenu}>
               <MenuList role='menu'>
-                {commandsMenu.map(({ name, onClick, icon: MenuIcon }) => (
+                {commandsMenu?.map(({ name, onClick, icon: MenuIcon }) => (
                   <MenuItem
                     onClick={() => {
                       onClick(pod);

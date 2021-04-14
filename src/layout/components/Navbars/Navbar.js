@@ -19,7 +19,7 @@ export default function Header(props) {
   function makeBrand() {
     var name;
     props.routes.map((prop) => {
-      if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
+      if (window.location.href.indexOf(prop.path) !== -1) {
         name = prop.name;
       }
       return null;
@@ -34,7 +34,6 @@ export default function Header(props) {
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
         <div className={classes.flex}>
-          {/* Here we create navbar brand, based on route name */}
           <Button color='transparent' href='#' className={classes.title}>
             {makeBrand()}
           </Button>

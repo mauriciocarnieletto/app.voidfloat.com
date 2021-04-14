@@ -56,6 +56,7 @@ export function PrivateLayout({ children, ...rest }) {
       <Sidebar
         routes={appRoutes.filter((r) => r.showOnMenu)}
         logo={logo}
+        color='primary'
         image={image}
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}

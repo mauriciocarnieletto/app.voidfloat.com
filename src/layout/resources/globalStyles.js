@@ -44,6 +44,7 @@ const defaultFont = {
 };
 
 const primaryColor = ["#434d5b", "#152133", "#152133", "#0e1723"];
+const secondaryColor = ["#cbb484", "#BFA266", "#BFA266", "#857147"];
 const warningColor = ["#ffb74d", "#ff9800", "#ff9800", "#f57c00"];
 const dangerColor = ["#e57373", "#f44336", "#f44336", "#d32f2f"];
 const successColor = ["#81c784", "#4caf50", "#4caf50", "#388e3c"];
@@ -128,7 +129,7 @@ const roseBoxShadow = {
 
 const grayCardHeader = {
   background:
-    "linear-gradient(60deg, " + grayColor[1] + ", " + grayColor[2] + ")",
+    "linear-gradient(60deg, " + grayColor[1] + ", " + grayColor[1] + ")",
   ...warningBoxShadow,
 };
 const warningCardHeader = {
@@ -447,6 +448,7 @@ export {
   infoColor,
   roseColor,
   grayColor,
+  secondaryColor,
   blackColor,
   whiteColor,
   primaryBoxShadow,

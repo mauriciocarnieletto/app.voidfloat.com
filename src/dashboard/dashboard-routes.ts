@@ -6,7 +6,7 @@ export const dashboardRoutes: AppRoute[] = [
     title: "Pods",
     name: "Meus Pods",
     component: DashboardPage,
-    showOnMenu: true,
+    showOnMenu: false,
     isPrivate: true,
     path: "/dashboard",
   },

@@ -21,41 +21,45 @@ const useStyles = makeStyles(styles);
 
 export default function Sidebar(props) {
   const classes = useStyles();
-  // verifies if routeName is the one active (in browser input)
-  function activeRoute(routeName) {
+
+  function isActiveRoute(routeName) {
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   }
+
   const { color, logo, image, routes } = props;
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {
-        var activePro = " ";
-        var listItemClasses;
+        let listItemClasses;
+        const RouteIcon = prop.icon;
+
         listItemClasses = classNames({
-          [" " + classes[color]]: activeRoute(prop.path),
+          [" " + classes[color]]: isActiveRoute(prop.path),
         });
+
         const whiteFontClasses = classNames({
-          [" " + classes.whiteFont]: activeRoute(prop.path),
+          [" " + classes.whiteFont]: isActiveRoute(prop.path),
         });
+
         return (
           <NavLink
             to={prop.path}
-            className={activePro + classes.item}
+            className={classes.item}
             activeClassName='active'
             key={key}>
             <ListItem button className={classes.itemLink + listItemClasses}>
               {props.icon &&
-                (typeof prop.icon === "string" ? (
+                (typeof RouteIcon === "string" ? (
                   <Icon
                     className={classNames(
                       classes.itemIcon,
                       whiteFontClasses,
                       {}
                     )}>
-                    {prop.icon}
+                    {RouteIcon}
                   </Icon>
                 ) : (
-                  <prop.icon
+                  <RouteIcon
                     className={classNames(
                       classes.itemIcon,
                       whiteFontClasses,

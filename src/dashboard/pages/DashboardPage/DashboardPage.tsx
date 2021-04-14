@@ -1,46 +1,22 @@
-import React, { useEffect } from "react";
-
-import GridItem from "../../../layout/components/Grid/GridItem";
-import GridContainer from "../../../layout/components/Grid/GridContainer";
-import { PodCard } from "../../../pod/components/PodCard/PodCard";
-import { podApi } from "../../../pod/services/pod-api";
-
-import { Pod } from "../../../pod/interfaces";
-
-// import sound from "../../../assets/sounds/bell.mp3";
-// import useStyles from "./dashboardStyle";
+import React from "react";
+import { Link } from "react-router-dom";
+import IconButton from "@material-ui/core/IconButton";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import useStyles from "./styles";
 
 export function DashboardPage() {
-  // const classes = useStyles();
-  const [pods, setPods] = React.useState<Pod[]>();
-
-  // function soundAlarm() {
-  //   var audio = new Audio(sound);
-
-  //   const interval = setInterval(() => {
-  //     audio.play();
-  //   }, 2000);
-  // }
-
-  useEffect(() => {
-    async function fetchPods() {
-      const newPods = await podApi.get();
-      setPods(newPods);
-    }
-
-    fetchPods();
-  }, []);
-
+  const classes = useStyles();
   return (
     <div>
-      <GridContainer>
-        {pods?.map((pod) => (
-          // @ts-ignore */}
-          <GridItem key={pod.id} xs={12} sm={6} md={4}>
-            <PodCard pod={pod} />
-          </GridItem>
-        ))}
-      </GridContainer>
+      <h1>Bem vindo(a)</h1>{" "}
+      <div>
+        <Link to='/pods'>
+          Ver meus pods
+          <IconButton className={classes.linkButton}>
+            <ArrowBackIcon />
+          </IconButton>
+        </Link>
+      </div>
     </div>
   );
 }

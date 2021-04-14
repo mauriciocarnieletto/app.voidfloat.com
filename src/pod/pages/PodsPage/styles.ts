@@ -79,5 +79,5 @@ const dashboardStyle = {
     },
   },
 };
-
+// @ts-ignore
 export default makeStyles(dashboardStyle);

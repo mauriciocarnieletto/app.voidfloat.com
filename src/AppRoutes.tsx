@@ -7,6 +7,8 @@ import {
   Redirect,
 } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { OverridableComponent } from "@material-ui/core/OverridableComponent";
+import { SvgIconTypeMap } from "@material-ui/core/SvgIcon/SvgIcon";
 
 import { AuthProvider } from "./auth/services/AuthContext";
 
@@ -22,6 +24,7 @@ export type AppRoute = RouteProps & {
   path: string;
   isPrivate?: boolean;
   showOnMenu?: boolean;
+  icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
 };
 
 export function PrivateRoute({
