@@ -29,6 +29,10 @@ export default function AdminNavbarLinks() {
   const [notifications, setNotifications] = React.useState([]);
   const [isMuted, setIsMuted] = React.useState(false);
 
+  React.useEffect(() => {
+    setNotifications([]);
+  }, []);
+
   const handleClickNotification = (event) => {
     if (openNotification && openNotification.contains(event.target)) {
       setOpenNotification(null);

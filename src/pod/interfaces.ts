@@ -74,6 +74,7 @@ export interface PodScreenData {
 export interface Pod {
   id: string;
   name: string;
+  model: string;
   connection: {
     status: EquipmentStatus;
     isConnected: boolean;

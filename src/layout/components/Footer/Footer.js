@@ -36,10 +36,19 @@ export default function Footer(props) {
                 Blog
               </a>
             </ListItem>
+            <ListItem className={classes.inlineBlock}>
+              <a
+                href='mailto:contato@voidfloat.com.br'
+                target='_blank'
+                rel='noreferrer'
+                className={classes.block}>
+                Suporte
+              </a>
+            </ListItem>
           </List>
         </div>
         <p className={classes.right}>
-          <span>&copy; {1900 + new Date().getYear()} </span>
+          <span>voidfloat &copy; {1900 + new Date().getYear()} </span>
         </p>
       </div>
     </footer>

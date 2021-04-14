@@ -126,6 +126,11 @@ const roseBoxShadow = {
     ",.4)",
 };
 
+const grayCardHeader = {
+  background:
+    "linear-gradient(60deg, " + grayColor[1] + ", " + grayColor[2] + ")",
+  ...warningBoxShadow,
+};
 const warningCardHeader = {
   background:
     "linear-gradient(60deg, " + warningColor[1] + ", " + warningColor[2] + ")",
@@ -278,6 +283,7 @@ const dropdownStyle = (theme) => ({
     },
   },
   popperNav: {
+    zIndex: 1000,
     [theme.breakpoints.down("sm")]: {
       position: "static !important",
       left: "unset !important",
@@ -432,6 +438,7 @@ export {
   container,
   boxShadow,
   card,
+  grayCardHeader,
   defaultFont,
   primaryColor,
   warningColor,

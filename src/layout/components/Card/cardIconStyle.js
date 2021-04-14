@@ -5,12 +5,13 @@ import {
   infoCardHeader,
   primaryCardHeader,
   roseCardHeader,
+  grayCardHeader,
   grayColor,
 } from "../../resources/globalStyles.js";
 
 const cardIconStyle = {
   cardIcon: {
-    "&$warningCardHeader,&$successCardHeader,&$dangerCardHeader,&$infoCardHeader,&$primaryCardHeader,&$roseCardHeader": {
+    "&$grayCardHeader,&$warningCardHeader,&$successCardHeader,&$dangerCardHeader,&$infoCardHeader,&$primaryCardHeader,&$roseCardHeader": {
       borderRadius: "3px",
       backgroundColor: grayColor[0],
       padding: "15px",
@@ -19,6 +20,7 @@ const cardIconStyle = {
       float: "left",
     },
   },
+  grayCardHeader,
   warningCardHeader,
   successCardHeader,
   dangerCardHeader,

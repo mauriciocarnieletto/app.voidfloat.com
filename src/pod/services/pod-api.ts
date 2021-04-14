@@ -20,7 +20,7 @@ export const podApi = {
   getById(id: string) {
     return api.get(`/pod/${id}`);
   },
-  get() {
+  get(): Promise<Pod[]> {
     return new Promise((resolve) => {
       resolve(mockData.pods);
     }); //api.get("/pod");
