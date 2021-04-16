@@ -13,7 +13,6 @@ import { Link } from "react-router-dom";
 // import useStyles from "./dashboardStyle";
 
 export function PodsPage() {
-  // const classes = useStyles();
   const [pods, setPods] = React.useState<Pod[]>();
   const [isLoading, setIsLoading] = React.useState<boolean>();
 
@@ -25,8 +24,8 @@ export function PodsPage() {
   //   }, 2000);
   // }
 
-  function receiveStatus(podsStatuses: any) {
-    console.log(podsStatuses);
+  function receiveStatus(podsStatuses: Pod[]) {
+    setPods(podsStatuses);
   }
 
   useEffect(() => {
@@ -50,30 +49,26 @@ export function PodsPage() {
   useEffect(() => {
     const url = `${configuration.baseURL}/pod-gateway`;
 
-    const socket = io.connect(url);
-
-    socket.on("podStatus", ({ message }: { message: string }) => {
-      receiveStatus(JSON.parse(message));
-    });
-
-    socket.on("connect", () => {
-      console.log("coooooooooooooneeeeeeeeecteddddddddddddi");
-    });
-    socket.on("connect_failed", () => {
-      console.log("culdi noit coooooooooooooneeeeeeeeecteddddddddddddi");
-    });
-
-    socket.on("disconnect", function () {
-      console.log("Disconnected");
-    });
-
-    socket.connect();
+    const socket = io
+      .connect(url)
+      .on("podStatus", ({ message }: { message: string }) => {
+        receiveStatus(JSON.parse(message));
+      })
+      .on("connect", () => {
+        console.log("coooooooooooooneeeeeeeeecteddddddddddddi");
+      })
+      .on("connect_failed", () => {
+        console.log("culdi noit coooooooooooooneeeeeeeeecteddddddddddddi");
+      })
+      .on("disconnect", function () {
+        console.log("Disconnected");
+      });
     socket.emit("watchPods");
 
     return () => {
-      socket.disconnect();
+      socket.removeAllListeners();
     };
-  }, []);
+  }, [pods]);
 
   return isLoading ? (
     <>Loading</>

@@ -20,6 +20,7 @@ import ControlPointIcon from "@material-ui/icons/ControlPoint";
 
 import useStyles from "./styles";
 import { MachineStates, Pod } from "../../interfaces";
+import { useHistory } from "react-router-dom";
 
 export interface PodCardProps {
   pod: Pod;
@@ -31,9 +32,21 @@ export interface PodStatesProps {
   color: (
     pod: PodCardProps["pod"]
   ) => "info" | "warning" | "danger" | "success" | "gray";
+  menus?: {
+    name: string;
+    onClick: (pod: Pod) => void;
+  }[];
 }
 
-export const PodStates: { [key in MachineStates]: PodStatesProps } = {
+export const PodStates: {
+  [key in MachineStates | "warning"]: PodStatesProps;
+} = {
+  warning: {
+    icon: (props: PodCardProps) => <TimerIcon />,
+    color: (pod: Pod) => "warning",
+    action: (props: PodCardProps) => <>Atenção</>,
+  },
+
   [MachineStates.TURN_OFF]: {
     icon: (props: PodCardProps) => <PowerSettingsNewIcon />,
     color: (pod: Pod) => "gray",
@@ -50,7 +63,7 @@ export const PodStates: { [key in MachineStates]: PodStatesProps } = {
     icon: (props: PodCardProps) => <WavesIcon />,
     color: (pod: Pod) => "info",
     action: ({ pod }: PodCardProps) => (
-      <>Em sessão ({pod.screen.remainingTime})</>
+      <>Em sessão ({pod.screen?.remainingTime})</>
     ),
   },
 
@@ -83,7 +96,7 @@ function PodCardComponent({ pod }: PodCardProps) {
   const classes = useStyles();
   const actionsMenuButtonRef = useRef<HTMLButtonElement>(null);
   const { icon: StatusIcon, color: getColor, action: StatusAction } = PodStates[
-    pod.screen.sessionStatus
+    pod.screen ? pod.screen.sessionStatus : "warning"
   ];
   const [isActionsMenuOpen, setIsActionsMenuOpen] = useState(false);
 
@@ -97,7 +110,7 @@ function PodCardComponent({ pod }: PodCardProps) {
         <h3 className={classes.cardTitle}>{pod.name}</h3>
       </CardHeader>
       <CardBody>
-        {pod.connection.isConnected ? "Conectado" : "Sem comunicação"}
+        {pod.connection?.isConnected ? "Conectado" : "Sem comunicação"}
       </CardBody>
       <CardFooter stats>
         <div className={classes.stats}>

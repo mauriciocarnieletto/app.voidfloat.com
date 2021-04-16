@@ -77,11 +77,11 @@ export interface Pod {
   ipAddress: string;
   serialNumber: string;
   hostname: string;
-  connection: {
+  connection?: {
     status: EquipmentStatus;
     isConnected: boolean;
   };
-  screen: PodScreenData;
+  screen?: PodScreenData;
 }
 
 export interface PodConfigurationCommand {

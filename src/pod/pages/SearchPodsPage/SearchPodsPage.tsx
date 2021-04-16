@@ -21,7 +21,7 @@ export function AddPodModalForm({ pod, onSubmit }: AddPodModalFormProps) {
     <Modal open>
       <div className={classes.modalBody}>
         <div className={classes.form}>
-          <PodForm onSubmit={onSubmit} pod={pod} />
+          <PodForm onAfterSubmit={onSubmit} pod={pod} />
         </div>
       </div>
     </Modal>
@@ -53,7 +53,7 @@ export function SearchPodsPage() {
   const [isLoading, setIsLoading] = React.useState<boolean>();
 
   function handlePodSubmit(pod: Pod) {
-    setAddingPod(pod);
+    setAddingPod(undefined);
   }
 
   function handleAddPodClick(pod: Pod) {

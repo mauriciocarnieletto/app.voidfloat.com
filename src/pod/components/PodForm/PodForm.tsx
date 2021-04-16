@@ -38,6 +38,13 @@ export function PodForm({ pod, onAfterSubmit }: AddPodFormProps) {
     try {
       await podApi.upsert(data);
       onAfterSubmit && onAfterSubmit(data);
+      dispatch({
+        type: MessageHandlerActions.SUCCESS,
+        payload: {
+          type: MessageHandlerActions.SUCCESS,
+          message: "O pod foi adicionado",
+        },
+      });
     } catch (error) {
       dispatch({
         type: MessageHandlerActions.ERROR,
