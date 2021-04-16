@@ -6,6 +6,9 @@ export const mockData: { pods: Pod[] } = {
       id: "dae12e-e21e1-e12e12e-e12e12e",
       name: "Sala 30",
       model: "Void One",
+      serialNumber: "123123123",
+      ipAddress: "123123",
+      hostname: "123123",
       connection: {
         isConnected: true,
         status: EquipmentStatus.OK,
@@ -30,6 +33,9 @@ export const mockData: { pods: Pod[] } = {
       id: "dae12e-e21e1-e12e12e-e12e12e",
       name: "Sala 31",
       model: "Void One",
+      serialNumber: "123123123",
+      ipAddress: "123123",
+      hostname: "123123",
       connection: {
         isConnected: true,
         status: EquipmentStatus.OK,
@@ -54,6 +60,9 @@ export const mockData: { pods: Pod[] } = {
       id: "dae12e-e21e1-e12e12e-e12e12e",
       name: "Sala 31",
       model: "Void One",
+      serialNumber: "123123123",
+      ipAddress: "123123",
+      hostname: "123123",
       connection: {
         isConnected: true,
         status: EquipmentStatus.OK,
@@ -78,6 +87,9 @@ export const mockData: { pods: Pod[] } = {
       id: "dae12e-e21e1-e12e12e-e12e12e",
       name: "Sala 31",
       model: "Void One",
+      serialNumber: "123123123",
+      ipAddress: "123123",
+      hostname: "123123",
       connection: {
         isConnected: true,
         status: EquipmentStatus.OK,
@@ -102,6 +114,9 @@ export const mockData: { pods: Pod[] } = {
       id: "dae12e-e21e1-e12e12e-e12e12e",
       name: "Sala 31",
       model: "Void One",
+      serialNumber: "123123123",
+      ipAddress: "123123",
+      hostname: "123123",
       connection: {
         isConnected: true,
         status: EquipmentStatus.OK,
@@ -126,6 +141,9 @@ export const mockData: { pods: Pod[] } = {
       id: "dae12e-e21e1-e12e12e-e12e12e",
       name: "Sala 31",
       model: "Void One",
+      serialNumber: "123123123",
+      ipAddress: "123123",
+      hostname: "123123",
       connection: {
         isConnected: true,
         status: EquipmentStatus.OK,
@@ -150,6 +168,9 @@ export const mockData: { pods: Pod[] } = {
       id: "dae12e-e21e1-e12e12e-e12e12e",
       name: "Sala 31",
       model: "Void One",
+      serialNumber: "123123123",
+      ipAddress: "123123",
+      hostname: "123123",
       connection: {
         isConnected: true,
         status: EquipmentStatus.OK,

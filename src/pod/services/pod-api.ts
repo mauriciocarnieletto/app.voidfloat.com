@@ -1,6 +1,5 @@
 import { api } from "../../services/api";
-import { mockData } from "../services/mock-data";
-import { Pod } from "../interfaces";
+import { Pod, PodConfigurationCommand } from "../interfaces";
 
 export const podApi = {
   post(data: Pod) {
@@ -20,12 +19,24 @@ export const podApi = {
   getById(id: string) {
     return api.get(`/pod/${id}`);
   },
-  get(): Promise<Pod[]> {
-    return new Promise((resolve) => {
-      resolve(mockData.pods);
-    }); //api.get("/pod");
+  get() {
+    return api.get<Pod[]>("/pod");
   },
   searchByIpAddres(ipAddress: string) {
     return api.get(`/pod/ip/${ipAddress}`);
+  },
+  configuration: {
+    commands: {
+      get() {
+        return api.get<PodConfigurationCommand[]>(
+          "/pod-configuration-commands"
+        );
+      },
+    },
+    fields: {
+      get() {
+        return api.get("/pod-configuration-fields");
+      },
+    },
   },
 };

@@ -3,8 +3,8 @@ import { DashboardPage } from "./pages/DashboardPage";
 
 export const dashboardRoutes: AppRoute[] = [
   {
-    title: "Pods",
-    name: "Meus Pods",
+    title: "voidfloat",
+    name: "voidfloat",
     component: DashboardPage,
     showOnMenu: false,
     isPrivate: true,

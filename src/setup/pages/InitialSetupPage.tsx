@@ -17,8 +17,8 @@ import { User } from "../../user/interfaces";
 import { NetworkConfigurationForm } from "../../configuration/components/NetworkConfigurationForm";
 import { NetworkConfiguration } from "../../configuration/interfaces";
 import { networkConfigurationApi } from "../../configuration/services/server-configuration-api";
-
 import { slugify } from "../../helpers";
+
 import {
   MessageHandlerActions,
   useMessageHandler,
@@ -109,24 +109,43 @@ export default function InitialSetupPage() {
         );
       case 1:
         return (
-          <SignUpForm
-            user={
-              userData ||
-              user ||
-              (clientData?.id
-                ? {
-                    clientId: clientData.id,
-                    name: clientData.name || "",
-                    email: clientData
-                      ? `${slugify(clientData.name)}@voidfloat.com.br`
-                      : "",
-                  }
-                : undefined)
-            }
-            onAfterSubmit={(user) => {
-              pushState({ userData: user, activeStep: activeStep + 1 });
-            }}
-          />
+          <>
+            <SignUpForm
+              user={
+                userData ||
+                user ||
+                (clientData?.id
+                  ? {
+                      clientId: clientData.id,
+                      name: clientData.name || "",
+                      email: clientData
+                        ? `${slugify(clientData.name)}@voidfloat.com.br`
+                        : "",
+                    }
+                  : undefined)
+              }
+              onAfterSubmit={(user) => {
+                pushState({ userData: user, activeStep: activeStep + 1 });
+              }}
+            />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              {user ? (
+                <Button
+                  variant='contained'
+                  onClick={() => pushState({ activeStep: activeStep + 1 })}
+                  color='default'>
+                  Pular
+                </Button>
+              ) : (
+                ""
+              )}
+            </div>
+          </>
         );
       case 2:
         if (!networkConfigurationData) {

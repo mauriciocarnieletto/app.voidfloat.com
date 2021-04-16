@@ -79,7 +79,7 @@ export const PodStates: { [key in MachineStates]: PodStatesProps } = {
   },
 };
 
-export function PodCard({ pod }: PodCardProps) {
+function PodCardComponent({ pod }: PodCardProps) {
   const classes = useStyles();
   const actionsMenuButtonRef = useRef<HTMLButtonElement>(null);
   const { icon: StatusIcon, color: getColor, action: StatusAction } = PodStates[
@@ -122,3 +122,7 @@ export function PodCard({ pod }: PodCardProps) {
     </Card>
   );
 }
+
+PodCardComponent.displayName = "PodCard";
+
+export const PodCard = React.memo(PodCardComponent);

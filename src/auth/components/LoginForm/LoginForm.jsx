@@ -10,6 +10,8 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { authApi } from "../../services/auth-api";
+import { Redirect } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,8 +35,23 @@ const useStyles = makeStyles((theme) => ({
 
 export function LoginForm() {
   const classes = useStyles();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
-  return (
+  function handleSubmit(event) {
+    event.preventDefault();
+    authApi
+      .signIn(email, password)
+      .then(() => {
+        setIsLoggedIn(true);
+      })
+      .catch(console.error);
+  }
+
+  return isLoggedIn ? (
+    <Redirect to='/' />
+  ) : (
     <Container component='main' maxWidth='xs'>
       <CssBaseline />
       <div className={classes.paper}>
@@ -42,7 +59,7 @@ export function LoginForm() {
           <LockOutlinedIcon />
         </Avatar>
 
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handleSubmit} noValidate>
           <TextField
             variant='outlined'
             margin='normal'
@@ -52,6 +69,7 @@ export function LoginForm() {
             label='Email'
             name='email'
             autoComplete='email'
+            onChange={(event) => setEmail(event.target.value)}
             autoFocus
           />
           <TextField
@@ -63,6 +81,7 @@ export function LoginForm() {
             label='Senha'
             type='password'
             id='password'
+            onChange={(event) => setPassword(event.target.value)}
             autoComplete='current-password'
           />
           <FormControlLabel

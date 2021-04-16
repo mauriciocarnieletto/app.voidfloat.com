@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-
+import * as io from "socket.io-client";
+import { configuration } from "../../../services/api";
 import GridItem from "../../../layout/components/Grid/GridItem";
 import GridContainer from "../../../layout/components/Grid/GridContainer";
 import { PodCard } from "../../components/PodCard/PodCard";
 import { podApi } from "../../services/pod-api";
 
 import { Pod } from "../../interfaces";
+import { Link } from "react-router-dom";
 
 // import sound from "../../../assets/sounds/bell.mp3";
 // import useStyles from "./dashboardStyle";
@@ -13,6 +15,7 @@ import { Pod } from "../../interfaces";
 export function PodsPage() {
   // const classes = useStyles();
   const [pods, setPods] = React.useState<Pod[]>();
+  const [isLoading, setIsLoading] = React.useState<boolean>();
 
   // function soundAlarm() {
   //   var audio = new Audio(sound);
@@ -22,24 +25,75 @@ export function PodsPage() {
   //   }, 2000);
   // }
 
+  function receiveStatus(podsStatuses: any) {
+    console.log(podsStatuses);
+  }
+
   useEffect(() => {
-    async function fetchPods() {
-      const newPods = await podApi.get();
-      setPods(newPods);
+    setIsLoading(true);
+    function fetchPods() {
+      podApi
+        .get()
+        .then(({ data }) => {
+          setPods(data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+          setIsLoading(false);
+        });
     }
 
     fetchPods();
   }, []);
 
-  return (
+  useEffect(() => {
+    const url = `${configuration.baseURL}/pod-gateway`;
+
+    const socket = io.connect(url);
+
+    socket.on("podStatus", ({ message }: { message: string }) => {
+      receiveStatus(JSON.parse(message));
+    });
+
+    socket.on("connect", () => {
+      console.log("coooooooooooooneeeeeeeeecteddddddddddddi");
+    });
+    socket.on("connect_failed", () => {
+      console.log("culdi noit coooooooooooooneeeeeeeeecteddddddddddddi");
+    });
+
+    socket.on("disconnect", function () {
+      console.log("Disconnected");
+    });
+
+    socket.connect();
+    socket.emit("watchPods");
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  return isLoading ? (
+    <>Loading</>
+  ) : (
     <div>
       <GridContainer>
-        {pods?.map((pod) => (
-          // @ts-ignore */}
-          <GridItem key={pod.id} xs={12} sm={6} md={4}>
-            <PodCard pod={pod} />
+        {pods && pods.length > 0 ? (
+          pods.map((pod) => (
+            <GridItem key={pod.id} xs={12} sm={6} md={4}>
+              <PodCard pod={pod} />
+            </GridItem>
+          ))
+        ) : (
+          <GridItem>
+            <h3>Você ainda não possui uma void cadastrada.</h3>{" "}
+            <p>
+              <Link to='/pods/search'>Clique aqui para começar</Link>
+            </p>
           </GridItem>
-        ))}
+        )}
       </GridContainer>
     </div>
   );

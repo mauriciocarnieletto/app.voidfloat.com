@@ -12,10 +12,6 @@ import { NetworkConfiguration } from "../../interfaces";
 import { ComponentForm } from "../../../interfaces";
 import GridContainer from "../../../layout/components/Grid/GridContainer";
 import GridItem from "../../../layout/components/Grid/GridItem";
-import Card from "../../../layout/components/Card/Card";
-import CardHeader from "../../../layout/components/Card/CardHeader";
-import CardBody from "../../../layout/components/Card/CardBody";
-import CardFooter from "../../../layout/components/Card/CardFooter";
 
 export interface NetworkConfigurationFormProps
   extends ComponentForm<NetworkConfiguration> {
@@ -94,147 +90,131 @@ export function NetworkConfigurationForm({
 
   return (
     <GridContainer>
-      <GridItem xs={12} sm={12} md={12}>
+      <GridItem xs={12}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Card>
-            <CardHeader color='warning'>
-              <h3 className={classes.cardTitleWhite}>Configurações de Rede</h3>
-              Configurações de comunicação entre o server e as pods.
-            </CardHeader>
-            <CardBody>
-              <Controller
-                name='id'
-                control={control}
-                defaultValue={id}
-                render={({ field }) => <input type='hidden' {...field} />}
-              />
+          <Controller
+            name='id'
+            control={control}
+            defaultValue={id}
+            render={({ field }) => <input type='hidden' {...field} />}
+          />
 
+          <Controller
+            name='clientId'
+            control={control}
+            defaultValue={clientId}
+            rules={{ required: true }}
+            render={({ field }) => <input type='hidden' {...field} />}
+          />
+          <GridContainer>
+            <GridItem xs={12}>
               <Controller
-                name='clientId'
+                name='name'
                 control={control}
-                defaultValue={clientId}
+                defaultValue={name}
                 rules={{ required: true }}
-                render={({ field }) => <input type='hidden' {...field} />}
+                render={({ field }) => <TextField label='Nome' {...field} />}
               />
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
-                  <Controller
-                    name='name'
-                    control={control}
-                    defaultValue={name}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField label='Nome' {...field} />
-                    )}
-                  />
-                </GridItem>
+            </GridItem>
 
-                <GridItem xs={12} sm={12} md={4}>
-                  <Controller
-                    name='sshPort'
-                    control={control}
-                    defaultValue={sshPort}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField label='Porta SSH' {...field} />
-                    )}
-                  />
-                </GridItem>
+            <GridItem xs={12}>
+              <Controller
+                name='sshPort'
+                control={control}
+                defaultValue={sshPort}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField label='Porta SSH' {...field} />
+                )}
+              />
+            </GridItem>
 
-                <GridItem xs={12} sm={12} md={4}>
-                  <Controller
-                    name='hostname'
-                    control={control}
-                    defaultValue={hostname}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField label='Hostname' {...field} />
-                    )}
-                  />
-                </GridItem>
+            <GridItem xs={12}>
+              <Controller
+                name='hostname'
+                control={control}
+                defaultValue={hostname}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField label='Hostname' {...field} />
+                )}
+              />
+            </GridItem>
 
-                <GridItem xs={12} sm={12} md={4}>
-                  <Controller
-                    name='gatewayIp'
-                    control={control}
-                    defaultValue={gatewayIp}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField label='IP do Gateway' {...field} />
-                    )}
-                  />
-                </GridItem>
+            <GridItem xs={12}>
+              <Controller
+                name='gatewayIp'
+                control={control}
+                defaultValue={gatewayIp}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField label='IP do Gateway' {...field} />
+                )}
+              />
+            </GridItem>
 
-                <GridItem xs={12} sm={12} md={4}>
-                  <Controller
-                    name='localIp'
-                    control={control}
-                    defaultValue={localIp}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField label='IP local' {...field} />
-                    )}
-                  />
-                </GridItem>
+            <GridItem xs={12}>
+              <Controller
+                name='localIp'
+                control={control}
+                defaultValue={localIp}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField label='IP local' {...field} />
+                )}
+              />
+            </GridItem>
 
-                <GridItem xs={12} sm={12} md={4}>
-                  <Controller
-                    name='publicIp'
-                    control={control}
-                    defaultValue={publicIp}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField label='IP público' {...field} />
-                    )}
-                  />
-                </GridItem>
+            <GridItem xs={12}>
+              <Controller
+                name='publicIp'
+                control={control}
+                defaultValue={publicIp}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField label='IP público' {...field} />
+                )}
+              />
+            </GridItem>
 
-                <GridItem xs={12} sm={12} md={4}>
-                  <Controller
-                    name='subnet'
-                    control={control}
-                    defaultValue={subnet}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField label='Subnet' {...field} />
-                    )}
-                  />
-                </GridItem>
+            <GridItem xs={12}>
+              <Controller
+                name='subnet'
+                control={control}
+                defaultValue={subnet}
+                rules={{ required: true }}
+                render={({ field }) => <TextField label='Subnet' {...field} />}
+              />
+            </GridItem>
 
-                <GridItem xs={12} sm={12} md={4}>
-                  <Controller
-                    name='podPingEndpoint'
-                    control={control}
-                    defaultValue={podPingEndpoint}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField
-                        label='Enpoint de ping para os pods'
-                        {...field}
-                      />
-                    )}
-                  />
-                </GridItem>
+            <GridItem xs={12}>
+              <Controller
+                name='podPingEndpoint'
+                control={control}
+                defaultValue={podPingEndpoint}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField label='Enpoint de ping para os pods' {...field} />
+                )}
+              />
+            </GridItem>
 
-                <GridItem xs={12} sm={12} md={4}>
-                  <Controller
-                    name='podPort'
-                    control={control}
-                    defaultValue={podPort}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField label='Porta da api do pod' {...field} />
-                    )}
-                  />
-                </GridItem>
-              </GridContainer>
-            </CardBody>
-            <CardFooter>
-              <Button variant='contained' type='submit' color='primary'>
-                {!id ? "Enviar" : "Atualizar"}
-              </Button>
-            </CardFooter>
-          </Card>
+            <GridItem xs={12}>
+              <Controller
+                name='podPort'
+                control={control}
+                defaultValue={podPort}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <TextField label='Porta da api do pod' {...field} />
+                )}
+              />
+            </GridItem>
+          </GridContainer>
+
+          <Button variant='contained' type='submit' color='primary'>
+            {!id ? "Enviar" : "Atualizar"}
+          </Button>
         </form>
       </GridItem>
     </GridContainer>

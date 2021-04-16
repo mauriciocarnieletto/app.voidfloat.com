@@ -17,7 +17,6 @@ export interface AddPodFormProps extends ComponentForm<Pod> {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: theme.spacing(20),
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -26,8 +25,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function ClientForm({ pod, onAfterSubmit }: AddPodFormProps) {
-  const { id, name } = pod || { id: "", name: "" };
+export function PodForm({ pod, onAfterSubmit }: AddPodFormProps) {
+  const { id, name, hostname, ipAddress, serialNumber, model } = pod || {
+    id: "",
+    name: "",
+  };
   const { control, handleSubmit } = useForm();
   const classes = useStyles();
   const { dispatch } = useMessageHandler();
@@ -41,7 +43,7 @@ export function ClientForm({ pod, onAfterSubmit }: AddPodFormProps) {
         type: MessageHandlerActions.ERROR,
         payload: {
           type: MessageHandlerActions.ERROR,
-          message: "Ocorreu um erro ao cadastrar o cliente",
+          message: "Ocorreu um erro ao cadastrar o pod",
           description: error.message,
         },
       });
@@ -63,6 +65,38 @@ export function ClientForm({ pod, onAfterSubmit }: AddPodFormProps) {
           defaultValue={name}
           rules={{ required: true }}
           render={({ field }) => <TextField label='Nome' {...field} />}
+        />
+        <Controller
+          name='model'
+          control={control}
+          defaultValue={model}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <TextField label='Modelo' disabled {...field} />
+          )}
+        />
+        <Controller
+          name='serialNumber'
+          control={control}
+          defaultValue={serialNumber}
+          rules={{ required: true }}
+          render={({ field }) => <TextField label='Serial' {...field} />}
+        />
+        <Controller
+          name='ipAddress'
+          control={control}
+          defaultValue={ipAddress}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <TextField label='Endereço de IP' {...field} />
+          )}
+        />
+        <Controller
+          name='hostname'
+          control={control}
+          defaultValue={hostname}
+          rules={{ required: true }}
+          render={({ field }) => <TextField label='Hostname' {...field} />}
         />
         <Button variant='contained' type='submit' color='primary'>
           {id ? "Enviar" : "Atualizar"}

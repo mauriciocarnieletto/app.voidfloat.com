@@ -70,14 +70,42 @@ export interface PodScreenData {
    */
   serverEquipStatus: EquipmentStatus;
 }
-
 export interface Pod {
   id: string;
   name: string;
   model: string;
+  ipAddress: string;
+  serialNumber: string;
+  hostname: string;
   connection: {
     status: EquipmentStatus;
     isConnected: boolean;
   };
   screen: PodScreenData;
+}
+
+export interface PodConfigurationCommand {
+  id: number;
+  name: string;
+  description: string;
+  isTimeRequired: boolean;
+  command: number;
+}
+
+export interface PodConfigurationField {
+  id: number;
+  configurationType: "pod" | "component";
+  key: string;
+  value: string;
+  name: string;
+  description: string;
+  type: "number" | "string" | "list" | "boolean" | "function";
+  listOptions?: string;
+  functionName?: string;
+  numberMin?: number;
+  numberMax?: number;
+  isAdvanced?: boolean;
+  isShownOnCard?: boolean;
+  isShownOnSessionScreen?: boolean;
+  order?: number;
 }
