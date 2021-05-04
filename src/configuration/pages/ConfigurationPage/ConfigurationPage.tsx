@@ -8,6 +8,7 @@ export function ConfigurationPage() {
     <div>
       <h3>Bem vindo(a) ao módulo de configuração do sistema.</h3>
       <h4>Esta é uma área de risco, então, muito cuidado.</h4>
+
       <List>
         <ListItem button>
           <Link to='/configuration/server'>

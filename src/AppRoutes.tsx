@@ -21,7 +21,6 @@ import { appRoutes } from "./app-routes";
 export type AppRoute = RouteProps & {
   title: string;
   name: string;
-  path: string;
   isPrivate?: boolean;
   showOnMenu?: boolean;
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
@@ -90,9 +89,9 @@ export function AppRoutes() {
         <Switch>
           {appRoutes.map((props) => {
             return props.isPrivate ? (
-              <PrivateRoute key={props.path} {...props} />
+              <PrivateRoute key={props.name} {...props} />
             ) : (
-              <PublicRoute key={props.path} {...props} />
+              <PublicRoute key={props.name} {...props} />
             );
           })}
         </Switch>

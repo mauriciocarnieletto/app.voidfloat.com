@@ -1,5 +1,6 @@
 import { AppRoute } from "../AppRoutes";
 import { PodsPage } from "./pages/PodsPage";
+import { PodPage } from "./pages/PodPage";
 import { PodFormPage } from "./pages/PodFormPage";
 import { SearchPodsPage } from "./pages/SearchPodsPage";
 
@@ -15,6 +16,7 @@ export const podRoutes: AppRoute[] = [
     path: "/pods",
     icon: BathtubIcon,
     exact: true,
+    strict: true,
   },
   {
     title: "",
@@ -27,12 +29,22 @@ export const podRoutes: AppRoute[] = [
     exact: true,
   },
   {
-    title: "Pod",
-    name: "Pod",
+    title: "Criar um pod",
+    name: "Criar um pod",
     component: PodFormPage,
     showOnMenu: false,
     isPrivate: true,
-    path: "/pods/pod",
+    path: "/pods/create",
+    icon: BathtubIcon,
+    exact: true,
+  },
+  {
+    title: "Pod",
+    name: "Pod",
+    component: PodPage,
+    showOnMenu: false,
+    isPrivate: true,
+    path: "/pods/pod/:podId",
     icon: BathtubIcon,
   },
 ];

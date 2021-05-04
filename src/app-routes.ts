@@ -5,6 +5,7 @@ import { setupRoutes } from "./setup/setup-routes";
 import { podRoutes } from "./pod/pod-routes";
 import { calendarRoutes } from "./calendar/calendar-routes";
 import { configurationRoutes } from "./configuration/configuration-routes";
+import { errorsRoutes } from "./errors/errors-routes";
 
 export const appRoutes = [
   ...setupRoutes,
@@ -14,4 +15,5 @@ export const appRoutes = [
   ...podRoutes,
   ...calendarRoutes,
   ...configurationRoutes,
+  ...errorsRoutes,
 ];

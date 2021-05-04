@@ -11,3 +11,9 @@ export interface NetworkConfiguration {
   podPingEndpoint?: string;
   podPort?: number;
 }
+
+export interface PodCommandDTO {
+  id: number;
+  time?: number;
+  command: number;
+}

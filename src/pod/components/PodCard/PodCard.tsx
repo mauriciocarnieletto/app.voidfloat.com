@@ -20,7 +20,6 @@ import ControlPointIcon from "@material-ui/icons/ControlPoint";
 
 import useStyles from "./styles";
 import { MachineStates, Pod } from "../../interfaces";
-import { useHistory } from "react-router-dom";
 
 export interface PodCardProps {
   pod: Pod;

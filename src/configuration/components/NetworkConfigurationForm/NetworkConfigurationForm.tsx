@@ -2,7 +2,6 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import { Controller, useForm } from "react-hook-form";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
 import { networkConfigurationApi } from "../../services/server-configuration-api";
 import {
   MessageHandlerActions,
@@ -32,24 +31,6 @@ const navigationConfigurationDefaults = {
   podPort: "",
 };
 
-const useStyles = makeStyles((theme) => ({
-  cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
-    margin: "0",
-    fontSize: "14px",
-    marginTop: "0",
-    marginBottom: "0",
-  },
-  cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: 300,
-    marginBottom: "3px",
-    textDecoration: "none",
-  },
-}));
-
 export function NetworkConfigurationForm({
   networkConfiguration,
   onAfterSubmit,
@@ -69,7 +50,6 @@ export function NetworkConfigurationForm({
   } = networkConfiguration || navigationConfigurationDefaults;
 
   const { control, handleSubmit } = useForm();
-  const classes = useStyles();
   const { dispatch } = useMessageHandler();
 
   async function onSubmit(data: NetworkConfiguration) {

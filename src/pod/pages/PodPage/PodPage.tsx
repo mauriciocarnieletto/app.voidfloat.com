@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import * as io from "socket.io-client";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { configuration } from "../../../services/api";
 import GridItem from "../../../layout/components/Grid/GridItem";
 import GridContainer from "../../../layout/components/Grid/GridContainer";
@@ -9,32 +9,25 @@ import { podApi } from "../../services/pod-api";
 
 import { Pod } from "../../interfaces";
 
-// import sound from "../../../assets/sounds/bell.mp3";
-// import useStyles from "./dashboardStyle";
-
-export function PodsPage() {
-  const [pods, setPods] = React.useState<Pod[]>();
+export function PodPage() {
+  const [pod, setPod] = React.useState<Pod>();
   const [isLoading, setIsLoading] = React.useState<boolean>();
+  const { podId } = useParams<{ podId: string }>();
 
-  // function soundAlarm() {
-  //   var audio = new Audio(sound);
-
-  //   const interval = setInterval(() => {
-  //     audio.play();
-  //   }, 2000);
-  // }
-
-  function receiveStatus(podsStatuses: Pod[]) {
-    setPods(podsStatuses);
+  function receiveStatus(receivedPod: Pod) {
+    setPod(receivedPod);
   }
 
   useEffect(() => {
+    if (!podId) {
+      return;
+    }
     setIsLoading(true);
     function fetchPods() {
       podApi
-        .get()
+        .getById(podId)
         .then(({ data }) => {
-          setPods(data);
+          receiveStatus(data);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -44,7 +37,7 @@ export function PodsPage() {
     }
 
     fetchPods();
-  }, []);
+  }, [podId]);
 
   useEffect(() => {
     const url = `${configuration.baseURL}/pod-gateway`;
@@ -63,6 +56,7 @@ export function PodsPage() {
       .on("disconnect", function () {
         console.log("Disconnected");
       });
+
     socket.emit("watchPods");
 
     return () => {
@@ -70,27 +64,16 @@ export function PodsPage() {
     };
   }, []);
 
-  return isLoading ? (
+  return isLoading || !pod ? (
     <>Loading</>
   ) : (
     <div>
       <GridContainer>
-        {pods && pods.length > 0 ? (
-          pods.map((pod) => (
-            <GridItem key={pod.id} xs={12} sm={6} md={4}>
-              <Link to={`/pods/pod/${pod.id}`}>
-                <PodCard pod={pod} />
-              </Link>
-            </GridItem>
-          ))
-        ) : (
-          <GridItem>
-            <h3>Você ainda não possui uma void cadastrada.</h3>{" "}
-            <p>
-              <Link to='/pods/search'>Clique aqui para começar</Link>
-            </p>
-          </GridItem>
-        )}
+        <GridItem key={pod.id} xs={12} sm={6} md={4}>
+          <Link to={`/pods/pod/${pod.id}`}>
+            <PodCard pod={pod} />
+          </Link>
+        </GridItem>
       </GridContainer>
     </div>
   );
