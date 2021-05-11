@@ -1,6 +1,6 @@
 import { PodCommandDTO } from "../../configuration/interfaces";
 import { api } from "../../services/api";
-import { Pod, PodConfigurationCommand } from "../interfaces";
+import { Pod, PodAction, PodConfigurationCommand } from "../interfaces";
 
 export const podApi = {
   post(data: Pod) {
@@ -43,6 +43,14 @@ export const podApi = {
   communication: {
     executeCommand: (podId: string, command: PodCommandDTO) => {
       return api.post<Pod[]>(`/pod-communication/command/${podId}`, command);
+    },
+  },
+  actions: {
+    get() {
+      return api.get<PodAction[]>("/pod-actions");
+    },
+    execute(alias: string, data?: any) {
+      return api.post(`/pod-actions/execute/${alias}`, data);
     },
   },
 };

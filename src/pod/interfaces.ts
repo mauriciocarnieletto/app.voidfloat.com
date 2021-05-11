@@ -16,6 +16,7 @@ export enum EquipmentStatus {
 export interface PodScreenData {
   status: "OK";
   sessionStatus: MachineStates;
+  serial?: string;
   /**
    * Tempo restante do estado ou --:-- quando não disponível,
    */
@@ -31,7 +32,7 @@ export interface PodScreenData {
   /**
    * Velocidade da ventoinha de 450 a 2000,
    */
-  coolerRPM: number;
+  rpmCooler: number;
   /**
    * String com o nome da musica inicial
    */
@@ -70,6 +71,22 @@ export interface PodScreenData {
    */
   serverEquipStatus: EquipmentStatus;
 }
+
+export interface PodStatusData {
+  status: string;
+  heater: boolean;
+  UV: boolean;
+  INV: boolean;
+  cooler: boolean;
+  coolerRPM: boolean;
+  som: true;
+  leds: boolean;
+  phPump: boolean;
+  cloroPump: boolean;
+  h2o2Pump: boolean;
+  tdsPump: boolean;
+}
+
 export interface Pod {
   id: string;
   name: string;
@@ -82,6 +99,11 @@ export interface Pod {
     isConnected: boolean;
   };
   screen?: PodScreenData;
+  status?: PodStatusData;
+  /**
+   * Horário da ultima atualização.
+   */
+  time?: number;
 }
 
 export interface PodConfigurationCommand {
@@ -109,3 +131,5 @@ export interface PodConfigurationField {
   isShownOnSessionScreen?: boolean;
   order?: number;
 }
+
+export type PodAction = any;

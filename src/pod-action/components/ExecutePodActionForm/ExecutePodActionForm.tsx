@@ -2,30 +2,20 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import { Controller, useForm } from "react-hook-form";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import { podApi } from "../../services/pod-api";
 import {
   MessageHandlerActions,
   useMessageHandler,
 } from "../../../services/handlers/MessageHandler";
-import { Pod } from "../../interfaces";
+import { podApi } from "../../../pod/services/pod-api";
+import { Pod } from "../../../pod/interfaces";
 import { ComponentForm } from "../../../interfaces";
+import { useStyles } from "./styles";
 
 export interface AddPodFormProps extends ComponentForm<Pod> {
   pod?: Pod;
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-around",
-  },
-}));
-
-export function PodForm({ pod, onAfterSubmit }: AddPodFormProps) {
+export function ExecutePodActionForm({ pod, onAfterSubmit }: AddPodFormProps) {
   const { id, name, hostname, ipAddress, serialNumber, model } = pod || {};
   const { control, handleSubmit } = useForm();
   const classes = useStyles();

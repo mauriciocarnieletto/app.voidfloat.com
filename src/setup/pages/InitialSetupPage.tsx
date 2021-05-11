@@ -24,6 +24,7 @@ import {
   useMessageHandler,
 } from "../../services/handlers/MessageHandler";
 import { useAuth } from "../../auth/services/useAuth";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,6 +69,7 @@ interface StepState {
 export default function InitialSetupPage() {
   const classes = useStyles();
   const { dispatch } = useMessageHandler();
+  const history = useHistory();
   const [state, setState] = React.useState<StepState>({
     isLoading: false,
     activeStep: 0,
@@ -172,6 +174,7 @@ export default function InitialSetupPage() {
         return networkConfigurationData ? (
           <NetworkConfigurationForm
             networkConfiguration={networkConfigurationData}
+            onAfterSubmit={() => history.push("/pods/search")}
           />
         ) : null;
       case 3:

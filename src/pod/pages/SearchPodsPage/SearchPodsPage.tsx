@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button, Modal } from "@material-ui/core";
 import GridItem from "../../../layout/components/Grid/GridItem";
 import GridContainer from "../../../layout/components/Grid/GridContainer";
@@ -57,7 +58,14 @@ export function SearchPodsPage() {
   }
 
   function handleAddPodClick(pod: Pod) {
-    setAddingPod(pod);
+    setAddingPod({
+      id: pod.id,
+      name: pod.name,
+      model: pod.model,
+      ipAddress: pod.ipAddress,
+      serialNumber: pod.screen?.serial || "",
+      hostname: pod.hostname,
+    });
   }
 
   useEffect(() => {
@@ -91,8 +99,15 @@ export function SearchPodsPage() {
   if (showServerConfigurationForm)
     return <>Você precisa configurar o servidor</>;
 
-  return isLoading || !pods ? (
-    <LoadingMessage />
+  if (isLoading) return <LoadingMessage />;
+
+  return pods?.length === 0 ? (
+    <div>
+      <p>Não encontramos pods em sua rede automáticamente.</p>
+      <p>
+        Clique <Link to='/pods/create'>aqui</Link> para adicionar uma.
+      </p>
+    </div>
   ) : (
     <div>
       <GridContainer>

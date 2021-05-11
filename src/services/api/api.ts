@@ -29,5 +29,10 @@ export function useApi() {
     return config;
   });
 
+  axiosInstance.interceptors.response.use(function (config) {
+    console.log(config);
+    return config;
+  });
+
   return axiosInstance;
 }
