@@ -119,14 +119,13 @@ const fieldsColumns: GridColDef[] = [
 interface ConfigurationContextProps {
   executeInPod?: Pod;
 }
-export const ConfigurationContext = React.createContext<ConfigurationContextProps>(
-  {}
-);
+export const ConfigurationContext =
+  React.createContext<ConfigurationContextProps>({});
 
 export function ParametersConfigurationPage() {
   const [commands, setCommands] = useState<PodConfigurationCommand[]>([]);
-  const [podToCall, setPodToCall] = React.useState<Pod>();
   const [fields, setFields] = useState<PodConfigurationField[]>([]);
+  const [podToCall, setPodToCall] = React.useState<Pod>();
 
   useEffect(() => {
     podApi.configuration.commands

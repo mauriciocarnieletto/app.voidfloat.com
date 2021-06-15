@@ -10,8 +10,6 @@ import { Helmet } from "react-helmet";
 import { OverridableComponent } from "@material-ui/core/OverridableComponent";
 import { SvgIconTypeMap } from "@material-ui/core/SvgIcon/SvgIcon";
 
-import { AuthProvider } from "./auth/services/AuthContext";
-
 import { PrivateLayout } from "./layout/components/PrivateLayout";
 import { PublicLayout } from "./layout/components/PublicLayout";
 import { useAuth } from "./auth/services/useAuth";
@@ -84,18 +82,16 @@ export function PublicRoute({
 
 export function AppRoutes() {
   return (
-    <AuthProvider>
-      <Router>
-        <Switch>
-          {appRoutes.map((props) => {
-            return props.isPrivate ? (
-              <PrivateRoute key={props.name} {...props} />
-            ) : (
-              <PublicRoute key={props.name} {...props} />
-            );
-          })}
-        </Switch>
-      </Router>
-    </AuthProvider>
+    <Router>
+      <Switch>
+        {appRoutes.map((props) => {
+          return props.isPrivate ? (
+            <PrivateRoute key={props.name} {...props} />
+          ) : (
+            <PublicRoute key={props.name} {...props} />
+          );
+        })}
+      </Switch>
+    </Router>
   );
 }

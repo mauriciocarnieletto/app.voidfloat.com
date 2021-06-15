@@ -118,7 +118,7 @@ export interface PodConfigurationField {
   id: number;
   configurationType: "pod" | "component";
   key: string;
-  value: string;
+  defaultValue: string;
   name: string;
   description: string;
   type: "number" | "string" | "list" | "boolean" | "function";
@@ -131,5 +131,3 @@ export interface PodConfigurationField {
   isShownOnSessionScreen?: boolean;
   order?: number;
 }
-
-export type PodAction = any;

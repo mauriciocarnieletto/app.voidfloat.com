@@ -1,6 +1,11 @@
 import { PodCommandDTO } from "../../configuration/interfaces";
 import { api } from "../../services/api";
-import { Pod, PodAction, PodConfigurationCommand } from "../interfaces";
+import { PodAction } from "../../pod-action/interfaces";
+import {
+  Pod,
+  PodConfigurationCommand,
+  PodConfigurationField,
+} from "../interfaces";
 
 export const podApi = {
   post(data: Pod) {
@@ -36,7 +41,7 @@ export const podApi = {
     },
     fields: {
       get() {
-        return api.get("/pod-configuration-fields");
+        return api.get<PodConfigurationField[]>("/pod-configuration-fields");
       },
     },
   },
@@ -49,8 +54,8 @@ export const podApi = {
     get() {
       return api.get<PodAction[]>("/pod-actions");
     },
-    execute(alias: string, data?: any) {
-      return api.post(`/pod-actions/execute/${alias}`, data);
+    execute(podId: string, actionId: number, data?: any) {
+      return api.post(`/pod-communication/action/${podId}/${actionId}`, data);
     },
   },
 };
