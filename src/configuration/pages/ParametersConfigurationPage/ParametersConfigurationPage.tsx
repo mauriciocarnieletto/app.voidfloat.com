@@ -145,7 +145,6 @@ export function ParametersConfigurationPage() {
         columns={commandsColumns}
         rows={commands}
       />
-
       <ParametersTable<PodConfigurationField>
         title='Comandos'
         subtitle='Os comandos que podem ser executados nas pods.'
